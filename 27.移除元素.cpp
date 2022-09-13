@@ -7,7 +7,6 @@
 // @lc code=start
 class Solution {
 public:
-//
     int removeElement(vector<int>& nums, int val) {
         int slowindex = 0;
         for (int quickindex = 0; quickindex < nums.size(); quickindex++)
