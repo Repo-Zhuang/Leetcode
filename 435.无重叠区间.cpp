@@ -5,6 +5,7 @@
  */
 
 // @lc code=start
+//
 class Solution {
 public:
     int eraseOverlapIntervals(vector<vector<int>>& intervals) {
