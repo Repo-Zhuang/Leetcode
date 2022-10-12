@@ -14,14 +14,13 @@ public:
         for (int i = 0; i < arr.size(); i++) {
             sum += i;
             Cursum += arr[i];
-            if (Cursum == sum)
-            {
+            if (Cursum == sum){
                 sum = 0;
                 Cursum = 0;
                 result++;
             }
         }
-        return result == 0 ? 1 : result;
+        return result;
     }
 };
 // @lc code=end
