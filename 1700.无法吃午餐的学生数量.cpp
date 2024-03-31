@@ -21,7 +21,6 @@ public:
         }
         return numone + numzero;
     }
-    
 };
 // @lc code=end
 

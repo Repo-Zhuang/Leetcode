@@ -6,17 +6,21 @@
 
 // @lc code=start
 class Solution {
+
 public:
     int fib(int N) {
-        if (N <= 1) return N;
-        vector<int> dp(N + 1);
-        dp[0] = 0;
-        dp[1] = 1;
+        if (N == 0 || N == 1) return N;
+        int dp_i_1 = 1, dp_i_2 = 0;
         for (int i = 2; i <= N; i++) {
-            dp[i] = dp[i - 1] + dp[i - 2];
+            int dp_i = dp_i_1 + dp_i_2;
+            dp_i_2 = dp_i_1;
+            dp_i_1 = dp_i;
         }
-        return dp[N];
+
+        return dp_i_1;
+        
     }
 };
+
 // @lc code=end
 
