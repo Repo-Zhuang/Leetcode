@@ -34,77 +34,75 @@
 // 输出:
 // 2
 
-#include <iostream>
-#include <unordered_map>
-#include <unordered_set>
-#include <vector>
-#include <string>
-#include <sstream>
-
+#include<bits/stdc++.h>
 using namespace std;
 
-unordered_map<string, vector<string>> graph;
-unordered_map<string, pair<int, int>> risks;
-unordered_set<string> roots;
 
-pair<int,int> dfs(const string& root) {
-    int risk0 = risks[root].first;
-    int risk1 = risks[root].second;
-
-    for (const string& sub : graph[root])
-    {
-        auto risk = dfs(sub);
-        risk0 += risk.first;
-        risk1 += risk.second;
+class UF{
+public:
+    int _n;
+    vector<int> parent;
+    UF(int n){
+        _n= n;
+        parent.resize(n);
+        for(int i=0; i<n ; i++){
+            parent[i]=i;
+        }
     }
-    
-    return {risk0, risk1};
-}
+    int find(int x){
+        if (parent[x] != x) parent[x]= find(parent[x]);
+        return parent[x];
+    }
+
+    void _union(int x, int y){
+        int rootX = find(x);
+        int rootY = find(y);
+        if(rootX != rootY) {
+            parent[rootX] = rootY;
+        }
+    }
+
+    bool isConnected(int x, int y) {
+        return find(x) == find(y);
+    }
+};
 
 int main() {
-    int M, N;
-    cin >> M >> N;
-    cin.ignore();
-    
+    int M;
+    cin >> M;
+    int N;
+    cin >> N;
     int cnt = 0;
-
+    UF uf(N);
+    unordered_map<string,int> mp;
+    vector<int> res(N, 0);
+    int k = 0;
     for (int i = 0; i < N; i++) {
-        string data;
         string A;
+        cin >> A;
+        if (mp.find(A)== mp.end()) mp[A] = k++;
+
         string B;
-        int C;
-        int D;
-        getline(cin, data);
-        istringstream stream(data);
-        stream >> A >> B >> C >> D; 
+        cin >> B;
+        if( B!="*" && mp.find(B) == mp.end()) {
+            mp[B] = k++;
+          
+        }
+        if( B!="*") uf._union(mp[A], mp[B]);
 
-        if ( B == "*") {
-            if (roots.find(A) == roots.end()){
-                roots.insert(A);
-                risks[A].first = 0;
-                risks[A].second = 0;
-            }
-        }
-        else {
-            graph[B].push_back(A);
-        }
 
-        if(C == 0) {
-            risks[A].first = D;
-        }
-        else {
-            risks[A].second = D;
-        }
+        int C,D;
+        cin >> C >> D;
+        int p = uf.find(mp[A]);
+        res[p] += ( C == 0 ? D*5 : D*2);
+    } 
+
+
+    for (const auto&node :res) {
+        if(node != 0 && node > M) cnt++;
     }
 
-    for (const string& root : roots) {
-        auto risks = dfs(root);
-        if (5 * risks.first + 2 * risks.second > M) {
-            cnt++;
-        }
-    }
-
-    cout << cnt << endl;
+    cout<<cnt<<endl;
 
     return 0;
  
